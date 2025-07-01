@@ -16,6 +16,11 @@ export default {
 
         const timestamp = new Date().toISOString();
         await env.HEARTBEATS.put(hostname, timestamp);
+        await env.DB.prepare(
+          "INSERT INTO pings (host, timestamp) VALUES (?1, ?2)",
+        )
+          .bind(hostname, timestamp)
+          .run();
 
         return new Response("Heartbeat recorded\n");
       } catch {
