@@ -29,6 +29,39 @@ export default {
     }
 
     if (request.method === "GET") {
+      const url = new URL(request.url);
+
+      if (url.pathname === "/history") {
+        const host = url.searchParams.get("host");
+        if (!host) {
+          return new Response("Missing host\n", { status: 400 });
+        }
+
+        try {
+          const { results } = await env.DB.prepare(
+            "SELECT timestamp FROM pings WHERE host = ? ORDER BY timestamp DESC",
+          )
+            .bind(host)
+            .all();
+
+          if (!results || results.length === 0) {
+            return new Response("No history found for the specified host\n", {
+              status: 404,
+            });
+          }
+
+          const timestamps = results.map((r) => r.timestamp);
+
+          return new Response(JSON.stringify(timestamps, null, 2), {
+            headers: { "Content-Type": "application/json" },
+          });
+        } catch {
+          return new Response("Internal server error\n", { status: 500 });
+        }
+      }
+
+      // GET req to any other path defaults to heartbeat list
+
       const hbList = await env.HEARTBEATS.list();
       const results = {};
 
