@@ -1,0 +1,22 @@
+{
+  "name": "hb",
+  "version": "0.1.0",
+  "private": true,
+  "description": "TBD",
+  "keywords": [],
+  "license": "MIT",
+  "author": "Theo Beers <theo.beers@fu-berlin.de>",
+  "type": "module",
+  "main": "worker.js",
+  "scripts": {
+    "format": "prettier --write .",
+    "lint": "eslint .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.30.1",
+    "eslint": "^9.30.1",
+    "globals": "^16.3.0",
+    "prettier": "^3.6.2"
+  }
+}
